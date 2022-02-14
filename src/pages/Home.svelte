@@ -4,26 +4,32 @@
 	import Welcome from '../components/Welcome.svelte';
 	import Promo from '../components/Promo.svelte';
 	import Footer from '../components/Footer.svelte';
+	import Loader from '../components/Loader.svelte';
 
-	import { charities } from '../data/charities';
+	let data = getData();
+
+	async function getData(){
+		const res = await fetch("http://charity-api-bwa.herokuapp.com/charities");
+		const data = await res.json()
+
+		if(res.ok){
+			return data;
+		} else {
+			throw new Error(data);
+		}
+	}
+
 	
-	let title = "Charity";
-	setTimeout(() => {
-		title = "Donasi";
-	}, 2000);
+
 
 </script>
 
-
-<style>
-	
-
-</style>
-
-<div>
-	<Header/>
-	<Welcome/>
-	<CharityList {charities}/>
-	<Promo />
-	<Footer />
-</div>
+<Header/>
+<Welcome/>
+{#await data}
+<Loader />
+{:then charities}
+<CharityList {charities}/>
+{/await}
+<Promo />
+<Footer />
