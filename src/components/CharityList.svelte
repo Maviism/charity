@@ -123,10 +123,10 @@
                     </div><!-- .xs-item-header END -->
                     <div class="xs-item-content">
                         <ul class="xs-simple-tag xs-mb-20">
-                            <li><a href="">{charity.category}</a></li>
+                            <li><a href="/">{charity.category}</a></li>
                         </ul>
 
-                        <a href="#" class="xs-post-title xs-mb-30">{charity.title}</a>
+                        <a href="/" class="xs-post-title xs-mb-30">{charity.title}</a>
 
                         <ul class="xs-list-with-content">
                             <li class="pledged">{formatCurrency(charity.pledged)}<span>Pledged</span></li>
@@ -142,7 +142,7 @@
                                 <img src="{charity.profile_photo}" alt="">
                             </div>
                             <div class="xs-avatar-title">
-                                <a href="#"><span>By</span>{charity.profile_name}</a>
+                                <a href="/"><span>By</span>{charity.profile_name}</a>
                             </div>
                         </div>
 
