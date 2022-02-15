@@ -11,10 +11,10 @@
     }
 
     function formatCurrency(nominal){
-        return nominal.toLocaleString("id-ID", {
+        return nominal?.toLocaleString("id-ID", {
             style: "currency",
             currency: "IDR",
-        })
+        }) || " ";
     }
 
     function calculateDaysRemaining(date_end){

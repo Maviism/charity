@@ -5,29 +5,45 @@
     import Loader from '../components/Loader.svelte';
 
     export let params;
-    let charity, name,amount, email, agree = false;
+    let name, amount, email, agree = false;
 
     async function getCharity(id){
         const res = await fetch(`https://charity-api-bwa.herokuapp.com/charities/${id}`);
         return res.json();
     }
     let data = getCharity(params.id)
-
-    // onMount(async function() {
-    //     charity = await getCharity(params.id);
-    // })
+    console.log(data)
 
     async function handleFormSubmit(event){
-        charity.pledged = charity.pledged + parseInt(amount);
+        const newData = await getCharity(params.id)
+        newData.pledged = newData.pledged + parseInt(amount);
+
+        console.log(newData)
         try{
             const res = await fetch(`https://charity-api-bwa.herokuapp.com/charities/${params.id}`,{
-            method: 'PUT',
-            headers: {
-                'content-type': 'application/json'
-            },
-            body: JSON.stringify(charity)
+                method: 'PUT',
+                headers: {
+                    'content-type': 'application/json'
+                },
+                body: JSON.stringify(newData)
             })
-            router.redirect("/success")
+
+            const resMid = await fetch(`/.netlify/functions/payment`,{
+                method: 'POST',
+                headers: {
+                    'content-type': 'application/json'
+                },
+                body: JSON.stringify({
+                    id: params.id,
+                    amount: parseInt(amount),
+                    name,
+                    email
+                })}
+            )
+
+            const midtransData = await resMid.json();
+            console.log(midtransData);
+            window.location.href = midtransData.url;
         }catch(err){
             console.log(err);
         }
