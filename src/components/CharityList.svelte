@@ -1,8 +1,9 @@
 <script>
+    import { charities } from '../store.js';
+    import Loader from '../components/Loader.svelte'
     import {onMount, onDestroy, afterUpdate, beforeUpdate} from 'svelte';
     import Modal from './Modal.svelte'
     
-    export let charities;
 
     let isModalOpen = false;
 
@@ -59,7 +60,7 @@
             </div><!-- .xs-heading-title END -->
         </div><!-- .row end -->
         <div class="row">
-            {#each charities as charity}
+            {#each $charities as charity}
             <div class="col-lg-4 col-md-6">
                 <!-- modal goes here -->
                 <!-- Modal -->
@@ -156,20 +157,10 @@
                     </div><!-- .xs-item-content END -->
                 </div><!-- .xs-popular-item END -->
             </div>
+            {:else}
+            <Loader />
             {/each}
         </div><!-- .row end -->
     </div><!-- .container end -->
 </section>
 
-<!-- <div>
-    <h2>Charity List</h2>
-    {#if charities != undefined}
-        {#each charities as charity }    
-        <ul>
-            <li>{charity}</li>
-        </ul>
-        {/each}
-    {:else}
-    <h5>Data tidak tersedia</h5>
-    {/if}
-</div> -->
