@@ -27,4 +27,4 @@ export async function getCharity(id){
     }
 }
 
-getCharities();
+// getCharities();

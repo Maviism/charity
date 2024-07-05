@@ -1,27 +1,31 @@
 <script>
-    import { charity, getCharity } from '../stores/data.js';
-    import { params } from '../stores/page.js';
+    import { charities } from '../data/charities.js';
+    // import { params } from '../stores/pages.js';
     import Header from '../components/Header.svelte';
     import Footer from '../components/Footer.svelte';
     import Loader from '../components/Loader.svelte';
 
     let name, amount, email, agree = false;
-    
-    getCharity($params.id)
+    let charity = {};
+    export let params;
+
+    function getCharity(id){
+        return charities.find(function(charity) {
+            return charity.id == parseInt(id)
+        } 
+        );
+    }
+
+    charity = getCharity(params.id)
+
+    console.log(charity)
    
     async function handleFormSubmit(event){
-        const newData = await getCharity($params.id)
+        const newData = await getCharity(params.id)
         newData.pledged = newData.pledged + parseInt(amount);
 
         console.log(newData)
         try{
-            const res = await fetch(`https://charity-api-bwa.herokuapp.com/charities/${$params.id}`,{
-                method: 'PUT',
-                headers: {
-                    'content-type': 'application/json'
-                },
-                body: JSON.stringify(newData)
-            })
 
             const resMid = await fetch(`/.netlify/functions/payment`,{
                 method: 'POST',
@@ -29,7 +33,7 @@
                     'content-type': 'application/json'
                 },
                 body: JSON.stringify({
-                    id: $params.id,
+                    id: params.id,
                     amount: parseInt(amount),
                     name,
                     email
@@ -71,7 +75,7 @@
 
 <!-- welcome section -->
 	<!--breadcumb start here-->
-{#if !$charity}
+{#if !charity}
 <Loader />
 {:else}
 <section class="xs-banner-inner-section parallax-window" style=
@@ -80,7 +84,7 @@
     <div class="container">
         <div class="color-white xs-inner-banner-content">
             <h2>Donate Now</h2>
-            <p>{$charity.title}</p>
+            <p>{charity.title}</p>
             <ul class="xs-breadcumb">
             <li class="badge badge-pill badge-primary">
                 <a href="/" class="color-white">Home /</a> Donate
@@ -98,13 +102,13 @@
             <div class="row">
                 <div class="col-lg-6">
                     <div class="xs-donation-form-images">
-                        <img src="{$charity.thumbnail}" class="img-responsive" alt="Family Images">
+                        <img src="{charity.thumbnail}" class="img-responsive" alt="Family Images">
                     </div>
                 </div>
                 <div class="col-lg-6">
                     <div class="xs-donation-form-wraper">
                         <div class="xs-heading xs-mb-30">
-                            <h2 class="xs-title">{$charity.title}</h2>
+                            <h2 class="xs-title">{charity.title}</h2>
                             <p class="small">To learn more about make donate charitywith us visit our "<span class="color-green">Contact
                             us</span>" site. By calling <span class="color-green">+44(0) 800 883 8450</span>.</p>
                             <span class="xs-separetor v2"></span>

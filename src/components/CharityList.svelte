@@ -1,9 +1,10 @@
 <script>
-    import { charities } from '../store.js';
     import Loader from '../components/Loader.svelte'
-    import {onMount, onDestroy, afterUpdate, beforeUpdate} from 'svelte';
+    // import {onMount, onDestroy, afterUpdate, beforeUpdate} from 'svelte';
     import Modal from './Modal.svelte'
     
+    export let charities;   
+    console.log(charities);
 
     let isModalOpen = false;
 
@@ -60,7 +61,7 @@
             </div><!-- .xs-heading-title END -->
         </div><!-- .row end -->
         <div class="row">
-            {#each $charities as charity}
+            {#each charities as charity}
             <div class="col-lg-4 col-md-6">
                 <!-- modal goes here -->
                 <!-- Modal -->

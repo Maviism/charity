@@ -5,12 +5,12 @@
 	import Promo from '../components/Promo.svelte';
 	import Footer from '../components/Footer.svelte';
 	import Loader from '../components/Loader.svelte';
-	
+    import { charities } from '../data/charities.js';
 
 </script>
 
 <Header/>
 <Welcome/>
-<CharityList />
+<CharityList {charities}/>
 <Promo />
 <Footer />
